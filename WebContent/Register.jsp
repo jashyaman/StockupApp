@@ -63,7 +63,7 @@ Confirm Password:<br>
 <input type="radio" name="usertype" value="normal" checked> Normal User<br>
 <br>
 Email:<br>
-<input type="email" name="email">
+<input type="text" name="email">
 <br><br>
 <input type="submit" value="Register">
 </form>

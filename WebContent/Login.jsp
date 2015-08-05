@@ -24,7 +24,7 @@
   </script>
 </head>
 <body>
-<form name="Login" action="${pageContext.request.contextPath}/LoginServlet" method="POST" onsubmit="return validateLoginForm()">
+<form name="Login" action="/Stock/LoginServlet" method="POST" onsubmit="return validateLoginForm()">
 Username:<br>
 <input type="text" name="username">
 <br>

@@ -47,10 +47,14 @@ public class TradeServlet extends HttpServlet {
 		  out.println("<head><title>Servlet JDBC</title></head>");
 		  out.println("<body>");
 	//	out.print("<script language='JavaScript'>alert('Check');</script>");
+		 
+		  /*
+		   * all stock info
+		   */
 		
 		out.println("</body></html>");
 		
-		response.getWriter().append(StockData.JsonOutput);
+		//response.getWriter().append(StockData.JsonOutput);
 		
 	}
 
