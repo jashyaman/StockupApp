@@ -54,7 +54,7 @@ public class RegisterCompanyServlet extends HttpServlet {
 			
 			stmt = con.createStatement();
 			
-			rs = stmt.executeQuery("Select username from user");
+			rs = stmt.executeQuery("Select username from user where username not in (select username from company where authorized = 1)");
 
 			while(rs.next())
 			{

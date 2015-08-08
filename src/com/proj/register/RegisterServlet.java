@@ -2,9 +2,6 @@ package com.proj.register;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Enumeration;
@@ -23,6 +20,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import miscellaneous.DatabaseConn;
 
 
 
@@ -61,9 +60,6 @@ public class RegisterServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//doGet(request, response);
-		ResultSet rs = null;
-		Statement stmt = null;
-		Connection con = null;
 		
 		System.out.println("Control comes here.");
 		//connect to db at the init method
@@ -83,22 +79,13 @@ public class RegisterServlet extends HttpServlet {
 		  }
 		  System.out.println(count);
 		  
-		  try {
-				Class.forName("com.mysql.jdbc.Driver");
-			} catch (ClassNotFoundException e) {
-				System.out.println("Where is your MySQL JDBC Driver?");
-				e.printStackTrace();
-				return;
-			}; 
-		
-			try{
-			con =DriverManager.getConnection 
-					  ("jdbc:mysql://localhost/stockmarket","root","root");
-			stmt = con.createStatement();
+		 
+		Statement stmt = DatabaseConn.createDBConn();
+			
 			
 			StringBuilder insertstmt = new StringBuilder();
 			insertstmt.append("INSERT INTO " + "User" +
-					"(Userid,FirstName,LastName,username,password,email,createdate,usertype) VALUES (getUserID(),");
+					"(Userid,FirstName,LastName,username,password,email,createdate,user_type) VALUES (getUserID(),");
 			
 				insertstmt.append("'"+params.get(f_firstname)+"',");
 				insertstmt.append("'"+params.get(f_lastname)+"',");
@@ -129,38 +116,23 @@ public class RegisterServlet extends HttpServlet {
 				
 				insertstmt.append("now(),"+usertype+")");
 			
-			stmt.executeUpdate(insertstmt.toString());
+			try {
+				System.out.println(insertstmt.toString());
+				stmt.executeUpdate(insertstmt.toString());
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-			catch(SQLException e)
-			{
-				
+			response.sendRedirect("/Stock/Login.jsp");
 			}
-			finally {
-				  try {
-				  if(rs != null) {
-				  rs.close();
-				  rs = null;
-				  }
-				  if(stmt != null) {
-				  stmt.close();
-				  stmt = null;
-				  }
-				  if(con != null) {
-				  con.close();
-				  con = null;
-				  }
-				  } catch (SQLException e) {
-					
-					  
-				  }
-				  }
+			
+				  
 			
 
 				
-		response.sendRedirect("/Stock/Login.jsp");
 		
 		
-	}
+		
+	
 
 	private void sendAdminRequestEmail() {
 		

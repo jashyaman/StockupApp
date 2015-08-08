@@ -14,8 +14,29 @@
     <servlet-name>Hello</servlet-name>
     <servlet-class>HelloServlet</servlet-class>
   </servlet>
+  
   <servlet-mapping>
     <servlet-name>Hello</servlet-name>
     <url-pattern>/HelloServlet</url-pattern>
   </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>BrokerDashboard</servlet-name>
+    <url-pattern>/BrokerDashboard</url-pattern>
+  </servlet-mapping>
+    <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/LoginServlet</url-pattern>
+  </servlet-mapping>
+  
+    <servlet-mapping>
+    <servlet-name>RegisterCompanyServlet</servlet-name>
+    <url-pattern>/RegisterCompanyServlet</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
+  
+  
 </web-app>

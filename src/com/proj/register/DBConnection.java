@@ -28,14 +28,12 @@ public class DBConnection extends HttpServlet {
      */
     public DBConnection() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     
 
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		super.service(request, response);
 		response.setContentType("text/html");
 		  PrintWriter out = response.getWriter();
@@ -62,7 +60,8 @@ public class DBConnection extends HttpServlet {
 						  stmt = con.createStatement();
 		  rs = stmt.executeQuery("SELECT * FROM User");
 		  // displaying records
-		  while(rs.next()){
+		  while(rs.next())
+		  {
 		  out.print(rs.getObject(1).toString());
 		  out.print("\t\t\t");
 		  out.print(rs.getObject(2).toString());
@@ -105,7 +104,6 @@ public class DBConnection extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("from: get() Served at: ").append(request.getContextPath());
 		
 		Enumeration<String> en = request.getParameterNames();
@@ -125,7 +123,6 @@ public class DBConnection extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		  
 			  
 		//doGet(request, response);

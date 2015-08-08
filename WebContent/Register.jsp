@@ -45,7 +45,7 @@
 <div class="container-fluid">
 <form name="UserRegistration" action="${pageContext.request.contextPath}/RegisterServlet" method="POST" onsubmit="return validateForm()">
 First name:<br>
-<input type="text" name="firstname">
+<input type="text" name="firstname" id="idfirstname">
 <br>
 Last name:<br>
 <input type="text" name="lastname">

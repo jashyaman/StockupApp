@@ -35,11 +35,10 @@ $(".selection").change(
       return false;
   }else
   	{
-	  
 	  var selText = $(".selection").find(":selected").text();
-	  
 	  	if(selText == "None"){
-	  		alert("Kindly make a user selection");
+	  		alert("Kindly make a user selection, in case no user exists in the list, kindly register a personnel before registering a company.");
+	  		
 	  		return false;
 	  	}else
 	  		{

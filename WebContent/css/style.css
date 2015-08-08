@@ -1,0 +1,52 @@
+ #op{
+   opacity: 1.0;
+ }
+ #tr{
+   opacity: 0.3;
+ }
+  #trh{
+   opacity: 0.5;
+ }
+  #opw{
+   opacity: 1.0;
+   color: black;
+ }
+   #opwo{
+   opacity: 100.0;
+   color: black;
+ }
+ #w{
+ color: darkblue;
+ }
+#ex {
+    height: 2048px;
+
+}
+  #trhp{
+   opacity: 0.5;
+   background: azure
+ }
+ 
+     #bodylogin {
+    background-color : #484848;
+    margin: 0;
+    padding: 0;
+}
+#h1login {
+    color : #000000;
+    text-align : center;
+    font-family: "SIMPSON";
+}
+#formlogin {
+    width: 300px;
+    margin: 0 auto;
+}
+div.chk {
+@-webkit-keyframes example {
+    0%   {border:3px solid black;}
+    25%  {border:4px solid blue;}
+    50%  {border:5px solid navyblue;}
+    75%  {border:6px solid red;}
+    100% {border:4px solid blue;}
+}
+}
