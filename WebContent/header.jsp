@@ -1,14 +1,65 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-</head>
-<body>
+<%
+    
+    	
+	String label,Home_label,button_equivalent ="error";
+	if(cookies == null)
+	{
+		label = "<a href=\"Login.jsp\">Login</a>";
+		button_equivalent = "<button class=\"pure-button pure-button-primary\" onclick=\"login()\">Login</button>";
+		Home_label = "<a href=\"/Stock/index.jsp\">Home</a>";
+		
+	}
+	else
+	{
+		Boolean check = false,Admin = false;
+		for (Cookie cookie : cookies) {
+			if(cookie.getName().equalsIgnoreCase("user_type"))
+			{
+				check = true;
+				if(cookie.getValue().split("_")[1].equals("true"))
+				{
+					Admin = true;
+				}
+				else
+				{
+					Admin = false;
+				}
+				
+			}
+		}
+		if(!check)
+		{
+			label = "<a href=\"Login.jsp\">Login</a>";
+			button_equivalent = "<button class=\"pure-button pure-button-primary\" onclick=\"login()\">Login</button>";
+			Home_label = "<a href=\"/Stock/index.jsp\">Home</a>";
+		}
+		else
+		{
+			
+			label =  "<a href=\"LogoutServlet\">Logout</a>";
+			button_equivalent = "<button class=\"pure-button pure-button-primary\" onclick=\"logout()\">Logout</button>";
+			if(Admin)
+				Home_label = "<a href=\"/Stock/AdminDashboard\">Admin Home</a>";
+			else
+				Home_label = "<a href=\"/Stock/BrokerDashboard\">Broker Home</a>";
+		}
+	}
+  %>
+  
+<script type="text/javascript">
+function home(){
+   window.location = "http://localhost:8080/Stock/index.jsp";
+}
+function logout(){
+	window.location = "http://localhost:8080/Stock/LogoutServlet";
+}
+function login(){
+	window.location = "http://localhost:8080/Stock/LoginServlet"; //TODO  //// <<<<<<<< 
+}
+</script>
+
 <div>
-<a href>Home</a>
-<a href>Logout</a>
+<button class="pure-button pure-button-primary" onclick="home()">Home</button>
+
+<%=button_equivalent%>
 </div>
-</body>
-</html>

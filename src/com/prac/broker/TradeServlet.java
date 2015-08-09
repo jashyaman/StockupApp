@@ -1,12 +1,12 @@
 package com.prac.broker;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -23,6 +23,8 @@ import miscellaneous.DatabaseConn;
 public class TradeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	ArrayList<StockData> StockArray = new ArrayList<StockData>();
+	String MarqueeStock = new String();
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -90,24 +92,15 @@ public class TradeServlet extends HttpServlet {
 			sb.append("::  ");
 		}
 		
-		request.setAttribute("StockArray", StockArray);
+		MarqueeStock = sb.toString();
+		request.setAttribute("StockArray", MarqueeStock);
 		
-		response.setContentType("text/html");
-		  PrintWriter out = response.getWriter();
-		  out.println("<html>");
-		  out.println("<head><title>Servlet JDBC</title></head>");
-		  out.println("<body>");
-		  out.print("<script language='JavaScript'>alert('Check');</script>"
-		  		+ "<div style=\" background-color: #b0c4de;\" >");
-		  out.print("<marquee behavior=\"scroll\" direction=\"left\">"+sb.toString()+"</marquee></div>");
-		 
-		  /*
-		   * all stock info
-		   */
-		
-		  out.println("</body></html>");
-		
-		
+		  RequestDispatcher dispatcher = request.getRequestDispatcher("/TradeScreen.jsp");
+			
+	        if (dispatcher != null){
+	        //	System.out.println("request dispatcher in process");
+	         dispatcher.forward(request, response);
+	        }
 	}
 
 	/**

@@ -36,7 +36,7 @@
 <div class="container">        
   <div class="row">
     <div class="col-sm-2" style="background-color:lavender;"><a href="/Stock/TradeServlet">Trade</a></div>
-    <div class="col-sm-3" style="background-color:lavenderblush;"><a href="Login.jsp">Latest News</a></div>
+    <div class="col-sm-3" style="background-color:lavenderblush;"><a href="">Latest News</a></div>
     <div class="col-sm-3" style="background-color:lavender;">Market watch</div>
     <div class="col-sm-2" style="background-color:lavenderblush;">References</div>
     <div class="col-sm-2" style="background-color:lavender;"><a href="/Stock/LogoutServlet">Logout</a></div>

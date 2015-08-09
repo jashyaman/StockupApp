@@ -48,7 +48,7 @@ public class LogoutServlet extends HttpServlet {
 		  out.println("<html>");
 		  out.println("<head><title>Servlet JDBC</title></head>");
 		  out.println("<body>");
-		out.print("<script language='JavaScript'>alert('Logged out successfully'); window.location=\"index.jsp\";</script>");
+		out.print("<script language='JavaScript'>window.location=\"index.jsp\";</script>");
 		out.println("</body></html>");
 		
 	}
