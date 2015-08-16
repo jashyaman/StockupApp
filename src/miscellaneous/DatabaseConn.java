@@ -2,6 +2,7 @@ package miscellaneous;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -29,6 +30,20 @@ public class DatabaseConn {
 			}
 			return stmt;
 	
+	}
+	
+	public static void ExecuteQuery(String sql) throws SQLException
+	{
+		Statement stmt = createDBConn();
+		stmt.execute(sql);
+		stmt.close();
+	}
+	
+	public static ResultSet ExecuteSelectQuery(String sql) throws SQLException
+	{
+		Statement stmt = createDBConn();
+		ResultSet rs = stmt.executeQuery(sql);
+		return rs;
 	}
 
 }

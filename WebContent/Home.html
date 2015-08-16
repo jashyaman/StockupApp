@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width'>
+        <meta http-equiv='X-UA-Compatible' content='chrome=1'>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+       <script src="http://www.drewgreenwell.com/Scripts/MetroJs/bundles/MetroJs.lt.js" type="text/javascript"></script>
+ 
+        <style>
+            .tile:hover {
+                opacity: .80;
+                filter: alpha(opacity=80);
+            }
+        </style>
+        <title>jquery.tiles.js | Splits images in as many tiles as you want, even with a gap.</title>
+        <link href="http://www.drewgreenwell.com/Scripts/MetroJs/bundles/MetroJs.lt.css" rel="stylesheet" type="text/css" />
+        
+                
+        <script src='jquery.tiles.js'></script>
+        <script>
+        
+        $(document).ready(function () {
+            $(".live-tile,.flip-list").liveTile();
+        });
+    
+
+            window.onload = function () {
+            	
+                $('#img1').tiles({
+                    x: 4,
+                    y: 4,
+                    gap: 5
+                });
+                $('#img2').tiles({
+                    gap: 5
+                }); 
+            };
+        </script>
+        
+    </head>
+
+    <body>
+    <div class="live-tile" data-mode="flip">
+        <img id="img1" src="http://lorempixel.com/320/240" />
+        <img id="img2" src="http://lorempixel.com/640/480" />
+	</div>
+    </body>
+</html>

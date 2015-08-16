@@ -40,12 +40,14 @@ public class TradeServlet extends HttpServlet {
 		
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
+			StockArray = null;
+			StockArray = new ArrayList<>();
 			int i =0;
 			while(rs.next())
 			{
-			StockData Stockinfo = new StockData(rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(4),Integer.parseInt(rs.getString(5)),rs.getString(6),rs.getString(7),rs.getString(8));
+			StockData Stockinfo = new StockData(i,rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(4),Integer.parseInt(rs.getString(5)),rs.getString(6),rs.getString(7),rs.getString(8));
 			StockArray.add(Stockinfo);
-				
+				i++;
 			}
 			System.out.println(i);
 		} catch (SQLException e) {
@@ -83,7 +85,8 @@ public class TradeServlet extends HttpServlet {
 		
 		System.out.println(StockArray.size());
 		
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = null;
+				sb = new StringBuilder();
 		
 		for (int i = 0; i < StockArray.size(); i++) {
 			sb.append(StockArray.get(i).getSymbol());
@@ -91,12 +94,16 @@ public class TradeServlet extends HttpServlet {
 			sb.append(StockArray.get(i).getPrice());
 			sb.append("::  ");
 		}
+		MarqueeStock = null;
+		MarqueeStock = new String();
 		
 		MarqueeStock = sb.toString();
+		request.removeAttribute("StockArray");
+		request.removeAttribute("StockData");
 		request.setAttribute("StockArray", MarqueeStock);
+		request.setAttribute("StockData", StockArray);
 		
-		  RequestDispatcher dispatcher = request.getRequestDispatcher("/TradeScreen.jsp");
-			
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/TradeScreen.jsp");
 	        if (dispatcher != null){
 	        //	System.out.println("request dispatcher in process");
 	         dispatcher.forward(request, response);

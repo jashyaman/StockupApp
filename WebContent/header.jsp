@@ -1,6 +1,5 @@
 <%
-    
-    	
+    Cookie[] cookies = request.getCookies();	
 	String label,Home_label,button_equivalent ="error";
 	if(cookies == null)
 	{
@@ -30,7 +29,7 @@
 		if(!check)
 		{
 			label = "<a href=\"Login.jsp\">Login</a>";
-			button_equivalent = "<button class=\"pure-button pure-button-primary\" onclick=\"login()\">Login</button>";
+			button_equivalent = "";
 			Home_label = "<a href=\"/Stock/index.jsp\">Home</a>";
 		}
 		else
@@ -54,7 +53,7 @@ function logout(){
 	window.location = "http://localhost:8080/Stock/LogoutServlet";
 }
 function login(){
-	window.location = "http://localhost:8080/Stock/LoginServlet"; //TODO  //// <<<<<<<< 
+	window.location = "http://localhost:8080/Stock/LoginServlet";   //// <<<<<<<< 
 }
 </script>
 

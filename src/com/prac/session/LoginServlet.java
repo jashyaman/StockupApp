@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.proj.register.RegisterServlet;
 
+import miscellaneous.DatabaseConn;
+
 /**
  * Servlet implementation class LoginServlet
  */
@@ -112,6 +114,8 @@ public class LoginServlet extends HttpServlet {
 			if(params.get(RegisterServlet.f_password).equals(pass))
 			{
 				
+				CreateSession(params,request.getCookies());
+				
 				if(!userType)
 				{
 					Cookie loginCookie = new Cookie("user_type",params.get(RegisterServlet.f_username)+"_"+userType);
@@ -183,6 +187,45 @@ public class LoginServlet extends HttpServlet {
 			
 			
 			
+	}
+
+	private void CreateSession(HashMap<String, String> params, Cookie[] cookies) {
+		System.out.println("From Create Session");
+		String jsession = new String();
+		for (Cookie cookie : cookies) {
+			if(cookie.getName().equalsIgnoreCase("JSESSIONID"))
+			{
+				jsession = cookie.getValue();
+				System.out.println(jsession);
+			}
+		}
+		
+		
+		String username = new String();
+		
+		for (String key : params.keySet()) {
+			System.out.println(key + " " + params.get(key));
+			if(key.equalsIgnoreCase("username"))
+			{
+				username = params.get(key);
+			}
+			
+		}
+		System.out.println(username);
+		
+		String sql = "INSERT INTO SESSION (USERNAME, SESSIONID) VALUES('"+username+"','"+jsession+"')";
+		
+			try {
+				DatabaseConn.ExecuteQuery(sql);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		System.out.println("done");
+		
+		
+		
 	}
 
 }

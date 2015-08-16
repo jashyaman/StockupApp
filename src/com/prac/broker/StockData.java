@@ -2,6 +2,7 @@ package com.prac.broker;
 
 public class StockData {
 
+	private int Index;
 	private String Symbol;
 	private String StockName;
 	private String Price;
@@ -12,9 +13,10 @@ public class StockData {
 	private String Summary_Quote;
 	
 	
-	public StockData(String symbol, String stockName, String price, String marketCap, int year, String sector,
+	public StockData(int index,String symbol, String stockName, String price, String marketCap, int year, String sector,
 			String industry, String summary_Quote) {
 		super();
+		Index = index;
 		Symbol = symbol;
 		StockName = stockName;
 		Price = price;
@@ -78,6 +80,16 @@ public class StockData {
 	}
 	public void setSummary_Quote(String summary_Quote) {
 		Summary_Quote = summary_Quote;
+	}
+
+
+	public int getIndex() {
+		return Index;
+	}
+
+
+	public void setIndex(int index) {
+		Index = index;
 	}
 	
 	

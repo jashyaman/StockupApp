@@ -75,6 +75,7 @@ public class BrokerDashboard extends HttpServlet {
 		String username = new String();
 		Cookie[] cookies = request.getCookies();
 		
+		System.out.println("inside getCompanyAuthList");
 		for (Cookie cookie : cookies) {
 			System.out.println(cookie.getName());
 			if(cookie.getName().equalsIgnoreCase("user_type"))

@@ -22,6 +22,9 @@
   		return true;
   	}
   }
+  function Home(){
+	   window.location = "http://localhost:8080/Stock/index.jsp";
+	}
   </script>
 </head>
 <body >
@@ -29,19 +32,31 @@
  <center><h1 ><b id="opw" >StockUp</b></h1>
   <h4 ><b id="w">An Online Trading portal</b></h4></center> 
 </div>
-<div style="font-family: Lucida Console,Helvectica, sans-serif;position:absolute;width:170px;border:3px solid black;
-padding: 10px;top:50%;left:55%;margin:-100px 0 0 -150px;-webkit-animation-name: example;-webkit-animation-duration: 4s;">
+<button class="pure-button pure-button-primary" onclick="Home()">Home</button>
+<div style="font-size:10px font-family: Helvectica, sans-serif;position:absolute;width:270px;border:1px solid red;
+padding: 5px;top:50%;left:20%;margin:-100px 0 0 -200px;-webkit-animation-name: example;-webkit-animation-duration: 4s;">
+<img height="30" width="30" src="http://icons.iconarchive.com/icons/martz90/hex/512/warning-icon.png"><br>
+Unauthorized login is prohibited. Note: Once login is successful, access to the user account entails privileges to perform buy/sell trades that will use monetary resources available in the banking account associated with this login. Kindly do not share login credentials with anyone. The Application is not responsible for any loss resulting from such incidents. All rights reserved.
+</div>
+
+<div style="font-family: Lucida Console,Helvectica, sans-serif;position:absolute;width:270px;border:3px solid black;
+padding: 5px;top:50%;left:55%;margin:-100px 0 0 -200px;-webkit-animation-name: example;-webkit-animation-duration: 4s;">
 <form id="#formlogin" name="Login" action="/Stock/LoginServlet" method="POST" onsubmit="return validateLoginForm()">
-Username:<br>
+<br>
+Username:
 <input type="text" name="username" style="font-family: Lucida Console,Helvectica, sans-serif">
 <br>
 <br>
-Password:<br>
+<br>
+Password:
 <input type="password" name="password" style="font-family: Lucida Console,Helvectica, sans-serif">
+<br>
+<a href="/Stock/Forgotpassword.html">Forgot password</a>
 <br>
 <br>
 <center><input class="btn btn-default btn-sm" type="submit" value="Login" style="font-family: Lucida Console,Helvectica, sans-serif" ></center>
 </form>
+
 </div>
 </body>
 </html>

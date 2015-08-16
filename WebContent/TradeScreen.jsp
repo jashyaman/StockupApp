@@ -6,13 +6,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Trading screen</title>
+
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
       <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+      <link rel="stylesheet" type="text/css" href="css/style.css">
   
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  
 </head>
 <body>
 <script type="text/javascript">
@@ -22,10 +25,31 @@ function home(){
 function logout(){
 	window.location = "http://localhost:8080/Stock/LogoutServlet";
 }
-$(document).ready (function() {
-    $( "#tabs" ).tabs();
-  });
 
+var row
+
+$(document).ready(function () {  
+	
+	 $( "#tabs" ).tabs();
+
+	 $('#stockdataTable tr').click(function (event) {
+	    	$('#resultTable').append($(this).clone());
+	    	//alert($(this).clone().text().replace("\n","").replace("\r","").replace("\v","").replace("\f",""));
+	    	
+	    	var check = $(this).clone().text().replace(/\s\s+/g, ' ');
+	    	alert(check);
+	    	$("#tradeDetail").val(check);
+		
+		 });
+	 
+});
+
+function reg (text){
+  	 //alert(text);
+  	
+  	 return true
+  }
+  
 </script>
 <div class="container-fluid" style=" opacity: 0.5;background: azure">
 <div class="col-sm-8" ><h1> Trades Screen</h1></div>
@@ -39,24 +63,54 @@ $(document).ready (function() {
 <div id="tabs">
 <ul >
     <li class="active"><a href="#tabs-1">Buy</a></li>
-    <li><a href="#tabs-2">Sell</a></li>
+    <!-- add a li line here -->
   </ul>
 <div class="container-fluid">
-<div id="tabs-1">
-table with stock name and price,
-table should allow selection of a row,
-qty and input text for number of stock.
-buy button
+ <div class="col-md-6" >
+ <div style="height:200px;width: 500px;overflow-y: scroll;">
+<table style="border: 1px solid black;padding:5px;table-layout: fixed" id="stockdataTable">
+      <tr style="border: 1px solid black;padding:5px" id="header">
+        <th style="border: 1px solid black;padding:5px">Symbol</th>
+        <th style="border: 1px solid black;padding:5px">Name</th>
+        <th style="border: 1px solid black;padding:5px">Price</th>
+        <th style="border: 1px solid black;padding:5px">MarketCap</th>
+      </tr>
+      <c:forEach var="stockRow" items="${requestScope.StockData}">
+      
+      <tr style="border: 1px solid black;padding:5px" id="${stockRow.getIndex() }">
+      	<td id="1" style="border: 1px solid black;padding:5px;">${stockRow.getSymbol() }</td>
+      	<td id="2" style="border: 1px solid black;padding:5px;word-wrap: break-word">${stockRow.getStockName() }</td>
+      	<td id="3" style="border: 1px solid black;padding:5px">${stockRow.getPrice() }</td>
+      	<td id="4" style="border: 1px solid black;padding:5px">${stockRow.getMarketCap() }</td>
+      </tr>
+      </c:forEach>
+</table>
 </div>
-<div id="tabs-2">
-table with stock name and price from user's portfolio
-if portfolio is empty, display empty table
-table should allow selection of a row,
-qty and input text for number of stock, validate if qty entered is less than available stock
-sell button
 </div>
-<br><br>
+    <div class="col-md-6" >
+	<div  style="height:500px;width: 500px;overflow-y: scroll;">
+<table style="border: 2px solid black;padding:5px;table-layout: fixed" id="resultTable">
+      <tr style="border: 1px solid black;padding:5px" id="1">
+        <th style="border: 1px solid black;padding:5px">Symbol</th>
+        <th style="border: 1px solid black;padding:5px">Name</th>
+        <th style="border: 1px solid black;padding:5px">Price</th>
+        <th style="border: 1px solid black;padding:5px">MarketCap</th>
+      </tr>
+      <tr style="border: 1px solid black;padding:5px" id="1">
+     
+      </tr>
+ </table>
+ <br>
+  
+ <form name="buyTrade" method="GET" action="/Stock/BuyServlet">
+ <input type="hidden" name="tradedetails" value="" id="tradeDetail"></input>
+ Qty: <input type="text" name="qty">
+ <input type="submit" value="Buy">
+ </form>
 </div>
+	</div>
+    </div>
+
 </div>
 </body>
 </html>

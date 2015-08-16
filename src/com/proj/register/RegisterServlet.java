@@ -134,7 +134,7 @@ public class RegisterServlet extends HttpServlet {
 		
 	
 
-	private void sendAdminRequestEmail() {
+private void sendAdminRequestEmail() {
 		
 
 		final String username = "stockmarketappli@gmail.com";

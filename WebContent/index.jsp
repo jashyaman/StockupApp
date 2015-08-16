@@ -69,7 +69,7 @@
     <div class="col-sm-2" ><b><%=Home_label%></b></div>
     <div class="col-sm-2" ><b><%=label%></b></div>
     <div class="col-sm-2" ><b><a href="Register.jsp">Register</a></b></div>
-    <div class="col-sm-2" ><b><a href="/RegisterCompanyServlet">Register Company</a></b></div>
+    <div class="col-sm-2" ><b><a href="/Stock/RegisterCompanyServlet">Register Company</a></b></div>
     <div class="col-sm-2" ><b>Contact Us</b></div>
     <div class="col-sm-2" ><b>Developer page</b></div> 
     
@@ -86,6 +86,9 @@
 <div class="col-sm-2" >BusinessLine</div>
 <div class="col-sm-2" >Fortune</div>
 </div>
+</div>
+<div>
+
 </div>
 	</body>	
 </html>
