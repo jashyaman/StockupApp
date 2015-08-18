@@ -213,7 +213,7 @@ public class LoginServlet extends HttpServlet {
 		}
 		System.out.println(username);
 		
-		String sql = "INSERT INTO SESSION (USERNAME, SESSIONID) VALUES('"+username+"','"+jsession+"')";
+		String sql = "INSERT INTO SESSION (USERNAME, SESSIONID,time) VALUES('"+username+"','"+jsession+"',DATE_FORMAT(now(), '%y-%m-%d %h:%m:%s'))";
 		
 			try {
 				DatabaseConn.ExecuteQuery(sql);

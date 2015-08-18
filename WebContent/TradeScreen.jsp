@@ -45,7 +45,6 @@ $(document).ready(function () {
 });
 
 function reg (text){
-  	 //alert(text);
   	
   	 return true
   }
@@ -63,12 +62,11 @@ function reg (text){
 <div id="tabs">
 <ul >
     <li class="active"><a href="#tabs-1">Buy</a></li>
-    <!-- add a li line here -->
+    <li class="active"><a href="#tabs-2">Sell</a></li>
   </ul>
-<div class="container-fluid">
- <div class="col-md-6" >
- <div style="height:200px;width: 500px;overflow-y: scroll;">
-<table style="border: 1px solid black;padding:5px;table-layout: fixed" id="stockdataTable">
+<div id="tabs-1">
+ <div class="col-md-6" style="height:200px;width: 500px;overflow-y: scroll;" >
+<table style="border: 1px solid black;padding:2px; table-layout:initial;" id="stockdataTable">
       <tr style="border: 1px solid black;padding:5px" id="header">
         <th style="border: 1px solid black;padding:5px">Symbol</th>
         <th style="border: 1px solid black;padding:5px">Name</th>
@@ -86,9 +84,9 @@ function reg (text){
       </c:forEach>
 </table>
 </div>
-</div>
     <div class="col-md-6" >
-	<div  style="height:500px;width: 500px;overflow-y: scroll;">
+	<div  style="height:200px;width: 500px;overflow-y: scroll;">
+	
 <table style="border: 2px solid black;padding:5px;table-layout: fixed" id="resultTable">
       <tr style="border: 1px solid black;padding:5px" id="1">
         <th style="border: 1px solid black;padding:5px">Symbol</th>
@@ -97,9 +95,9 @@ function reg (text){
         <th style="border: 1px solid black;padding:5px">MarketCap</th>
       </tr>
       <tr style="border: 1px solid black;padding:5px" id="1">
-     
       </tr>
  </table>
+ </div>
  <br>
   
  <form name="buyTrade" method="GET" action="/Stock/BuyServlet">
@@ -107,10 +105,31 @@ function reg (text){
  Qty: <input type="text" name="qty">
  <input type="submit" value="Buy">
  </form>
-</div>
 	</div>
     </div>
-
+<div id="tabs-2">
+<div class="col-md-6" style="height:200px;width: 500px;overflow-y: scroll;" >
+<table style="border: 1px solid black;padding:2px; table-layout:initial;" id="stockdataTable">
+      <tr style="border: 1px solid black;padding:5px" id="header">
+        <th style="border: 1px solid black;padding:5px">Symbol</th>
+        <th style="border: 1px solid black;padding:5px">Name</th>
+        <th style="border: 1px solid black;padding:5px">qty</th>
+        <th style="border: 1px solid black;padding:5px">bought for</th>
+        <th style="border: 1px solid black;padding:5px">current price</th>
+      </tr>
+      <c:forEach var="stockfolio" items="${requestScope.Stock_portfolio}">
+      
+      <tr style="border: 1px solid black;padding:5px">
+      	<td id="1" style="border: 1px solid black;padding:5px;">${stockfolio.getSymbol() }</td>
+      	<td id="2" style="border: 1px solid black;padding:5px;word-wrap: break-word">${stockfolio.getStockname() }</td>
+      	<td id="3" style="border: 1px solid black;padding:5px">${stockfolio.getQty_in_hand() }</td>
+      	<td id="4" style="border: 1px solid black;padding:5px">${stockfolio.getPrice_bought() }</td>
+      	<td id="5" style="border: 1px solid black;padding:5px">${stockfolio.getCurrent_price() }</td>
+      </tr>
+      </c:forEach>
+</table>
+</div>
+</div>
 </div>
 </body>
 </html>

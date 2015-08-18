@@ -34,6 +34,7 @@ public class DatabaseConn {
 	
 	public static void ExecuteQuery(String sql) throws SQLException
 	{
+		System.out.println("EXECUTING : "+ sql);
 		Statement stmt = createDBConn();
 		stmt.execute(sql);
 		stmt.close();
@@ -41,6 +42,7 @@ public class DatabaseConn {
 	
 	public static ResultSet ExecuteSelectQuery(String sql) throws SQLException
 	{
+		System.out.println(sql);
 		Statement stmt = createDBConn();
 		ResultSet rs = stmt.executeQuery(sql);
 		return rs;

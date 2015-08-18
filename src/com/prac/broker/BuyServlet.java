@@ -63,6 +63,10 @@ public class BuyServlet extends HttpServlet {
 			if(CreateBuyTransaction(map,request.getCookies()).equalsIgnoreCase("SUCCESSFUL")){
 				response.sendRedirect("/Stock/TradeServlet");
 			}
+			else
+			{
+				System.out.println("ERROR IN PROCESSING");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -73,32 +77,14 @@ public class BuyServlet extends HttpServlet {
 		
 	}
 
-	private String js_alertBox(String msg,int type) {
-		StringBuilder sb = new StringBuilder();
-		if(type == 1)
-		{
-			sb.append("<html>");
-			  sb.append("<head><title>Servlet JDBC</title></head>");
-			  sb.append("<body>");
-			  sb.append("<script language='JavaScript'>alert('"+msg+"');</script>");
-			  sb.append("</body></html>");
-		}
-		else if(type == 2)
-		{
-			sb.append("<html>");
-			  sb.append("<head><title>Servlet JDBC</title></head>");
-			  sb.append("<body>");
-			  sb.append("<script language='JavaScript'>window.location=\""+msg+"\";</script>");
-			  sb.append("</body></html>");
-		}
-		
-		return sb.toString();
-	}
+
 
 	private String CreateBuyTransaction(HashMap<String, String> map, Cookie[] cookies) throws SQLException {
 		
 		String[] txn_details = map.get(txn_detail).split(" ");
+		
 		String jsession = new String(),username = new String(),userid = new String(),accountno = new String(),balance = new String();
+		int txn_id  =0;
 			
 		for (Cookie cookie : cookies) {
 			if(cookie.getName().equalsIgnoreCase("JSESSIONID"))
@@ -131,7 +117,6 @@ public class BuyServlet extends HttpServlet {
 			}else return "error occurred during transaction";
 			
 			rs = DatabaseConn.ExecuteSelectQuery(GenerateQuery.getAccountdetailsfromUserId(userid));
-			
 		
 			if(rs!= null)
 			{
@@ -142,12 +127,10 @@ public class BuyServlet extends HttpServlet {
 				}
 			}else return "error occurred during transaction";
 			
-			
-			System.out.println("INSIDE CREATE BUY TRANSACTION - AFTER ALL THE SELECT QUERIES HAVE BEEN EXECUTED.");
-			
+			System.out.println(txn_details[3]);
 			double price = Double.parseDouble(txn_details[3]);
 			
-			double qty = Double.parseDouble(map.get("qty"));
+			int qty = Integer.parseInt(map.get("qty"));
 			
 			System.out.println(price + " x " + qty + " = "+  price*qty);
 			
@@ -158,11 +141,29 @@ public class BuyServlet extends HttpServlet {
 			else
 			{
 				DatabaseConn.ExecuteQuery(GenerateQuery.InsertBuyTransaction(accountno, userid, price*qty));
+				
+			rs = DatabaseConn.ExecuteSelectQuery(GenerateQuery.getTxnId(accountno, userid, price*qty));
+				
+				if(rs != null)
+				{
+					while(rs.next())
+					{
+						txn_id = (int)rs.getObject(1);
+						System.out.println(txn_id);
+					}
+				}
+				else
+				{
+					System.out.println("error is resultset information");
+				}
+				
+				
+				DatabaseConn.ExecuteQuery(GenerateQuery.InsertTransactionDetails(txn_id,txn_details[1],price,qty));
+				
+				System.out.println("THE QUERIES HAVE BEEN EXECUTED");
 				return "SUCCESSFUL";
 				
 			}
-		
-		
 		}else return "error occurred during transaction";
 	
 	}

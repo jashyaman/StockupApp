@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import DAO.GenerateQuery;
 import miscellaneous.DatabaseConn;
 
 /**
@@ -23,6 +24,7 @@ import miscellaneous.DatabaseConn;
 public class TradeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	ArrayList<StockData> StockArray = new ArrayList<StockData>();
+	ArrayList<Stock_Portfolio> stock_portfolio = new ArrayList<Stock_Portfolio>();
 	String MarqueeStock = new String();
 	
     /**
@@ -33,35 +35,9 @@ public class TradeServlet extends HttpServlet {
     }
 
 	@Override
-	protected void service(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException {
-		Statement stmt = DatabaseConn.createDBConn();
-		
-		String sql = "SELECT SYMBOL, NAME, LastSale, MarketCap, startYear, sector, industry, Summary_Quote from company_origin";
-		
-		try {
-			ResultSet rs = stmt.executeQuery(sql);
-			StockArray = null;
-			StockArray = new ArrayList<>();
-			int i =0;
-			while(rs.next())
-			{
-			StockData Stockinfo = new StockData(i,rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(4),Integer.parseInt(rs.getString(5)),rs.getString(6),rs.getString(7),rs.getString(8));
-			StockArray.add(Stockinfo);
-				i++;
-			}
-			System.out.println(i);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		super.service(arg0, arg1);
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Cookie[] cookies = request.getCookies();
-
+		String jsession = new String();
 		if(cookies == null)
 		{
 			response.sendRedirect("/Stock/index.jsp");
@@ -75,6 +51,10 @@ public class TradeServlet extends HttpServlet {
 				{
 					check = true;
 				}
+				 if(cookie.getName().equalsIgnoreCase("JESSIONID"))
+				 {
+					 jsession = cookie.getValue();
+				 }
 			}
 			if(!check)
 			{
@@ -82,8 +62,84 @@ public class TradeServlet extends HttpServlet {
 				return;
 			}
 		}
+
+		/*
+		 * with the jsessionid, the logged in user's portfolio is fetched from the database and stored.
+		 */
+		stock_portfolio = genPortfolio(jsession);
 		
-		System.out.println(StockArray.size());
+		
+		Statement stmt = DatabaseConn.createDBConn();
+		
+		String sql = "SELECT SYMBOL, cNAME, LastSale, MarketCap, startYear, sector, industry, Summary_Quote from company_origin";
+		
+		
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+			StockArray = null;
+			StockArray = new ArrayList<>();
+			int i =0;
+			while(rs.next())
+			{
+				double price = 0.0;
+				try{
+					price = Double.parseDouble(rs.getString(3));
+				}
+				catch(NumberFormatException e)
+				{
+					price = 0.0;
+				}
+				StockData Stockinfo = new StockData(); 
+				try{
+			 Stockinfo = new StockData(i,rs.getString(1), rs.getString(2),price,rs.getString(4),Integer.parseInt(rs.getString(5)),rs.getString(6),rs.getString(7),rs.getString(8));
+				}
+				catch(NumberFormatException e)
+				{
+					System.out.println("here");
+				}
+			StockArray.add(Stockinfo);
+				i++;
+			}
+			System.out.println(i);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		super.service(request, response);
+	}
+
+	private ArrayList<Stock_Portfolio> genPortfolio(String jsession) {
+		ArrayList<Stock_Portfolio> stock_portfolio = new ArrayList<Stock_Portfolio>();
+		
+		
+		ResultSet rs = null;
+		try {
+			 rs = DatabaseConn.ExecuteSelectQuery(GenerateQuery.getStock_portfolio_data(jsession));
+			 
+			 while(rs.next())
+			 {
+				 //stock_portfolio.price,stock_data.price 
+				 Stock_Portfolio s_p = new Stock_Portfolio();
+				 s_p.setSymbol(rs.getString(1));
+				 s_p.setStockname(rs.getString(2));
+				 s_p.setQty_in_hand(rs.getInt(3));
+				 s_p.setPrice_bought(rs.getDouble(4));
+				 s_p.setCurrent_price(rs.getDouble(5));
+				 
+				 stock_portfolio.add(s_p);
+			 }
+			 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return stock_portfolio;
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		
 		StringBuilder sb = null;
 				sb = new StringBuilder();
@@ -102,6 +158,10 @@ public class TradeServlet extends HttpServlet {
 		request.removeAttribute("StockData");
 		request.setAttribute("StockArray", MarqueeStock);
 		request.setAttribute("StockData", StockArray);
+		
+		System.out.println(stock_portfolio.size());
+		request.setAttribute("Stock_portfolio", stock_portfolio);
+		
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/TradeScreen.jsp");
 	        if (dispatcher != null){
