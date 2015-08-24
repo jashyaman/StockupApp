@@ -2,6 +2,7 @@ package com.proj.register;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Enumeration;
@@ -21,6 +22,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mysql.fabric.xmlrpc.base.Data;
+
+import DAO.GenerateQuery;
 import miscellaneous.DatabaseConn;
 
 
@@ -38,6 +42,15 @@ public class RegisterServlet extends HttpServlet {
 	public static final String f_password = "password";
 	public static final String f_usertype = "usertype";
 	public static final String f_email = "email";
+	public static final String f_baccount = "baccount";
+	public static final String f_fullname = "fullname";
+	public static final String f_balance = "balance";
+	public static final String f_address = "addr";
+	public static final String f_aptno = "apt";
+	public static final String f_city = "city";
+	public static final String f_state = "state";
+	
+	
 	
 	public static HashMap<String, String> params = new HashMap<String,String>();
        
@@ -96,6 +109,11 @@ public class RegisterServlet extends HttpServlet {
 				
 				System.out.println(params.get(f_usertype) );
 				
+				
+			
+				
+				
+				
 				int usertype = 0;
 				if(params.get(f_usertype).equals("normal"))
 					usertype = 0;
@@ -119,6 +137,8 @@ public class RegisterServlet extends HttpServlet {
 			try {
 				System.out.println(insertstmt.toString());
 				stmt.executeUpdate(insertstmt.toString());
+				
+				CreateAccountAndAddressDetails(params);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -134,6 +154,31 @@ public class RegisterServlet extends HttpServlet {
 		
 	
 
+private void CreateAccountAndAddressDetails(HashMap<String, String> parameters) {
+	System.out.println("CreateAccountAndAddressDetails");
+		String userId = new String();
+	ResultSet rs;
+	try {
+		System.out.println(parameters.get(f_username));
+		rs = DatabaseConn.ExecuteSelectQuery(GenerateQuery.getUserIDFromUsername(parameters.get(f_username)));
+		
+
+		while(rs.next())
+		{
+			userId = rs.getString(1);
+		}
+			
+		System.out.println("Userid : " + userId);
+		
+		DatabaseConn.ExecuteQuery(GenerateQuery.createAccountinformation(userId,parameters.get(f_balance)));
+		DatabaseConn.ExecuteQuery(GenerateQuery.createUserDetailsRecord(userId,parameters));
+
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+}
+	
 private void sendAdminRequestEmail() {
 		
 

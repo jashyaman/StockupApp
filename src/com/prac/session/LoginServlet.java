@@ -10,6 +10,8 @@ import java.sql.Statement;
 import java.util.Enumeration;
 import java.util.HashMap;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -45,7 +47,17 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("check credentials").append(request.getContextPath());
+		response.getWriter().append("Loading login screen...").append(request.getContextPath());
+
+		String filename = "/Stock/WEB-INF/jsp/Login.jsp" ; 
+		ServletContext context = this.getServletContext(); 
+		String pathname =context.getRealPath(filename); 
+		
+		System.out.println(pathname);
+		
+		response.sendRedirect(pathname);
+		
+        
 	}
 
 	/**
@@ -114,14 +126,13 @@ public class LoginServlet extends HttpServlet {
 			if(params.get(RegisterServlet.f_password).equals(pass))
 			{
 				
-				CreateSession(params,request.getCookies());
+				CreateSession(params,request.getCookies(), request, response);
 				
 				if(!userType)
 				{
 					Cookie loginCookie = new Cookie("user_type",params.get(RegisterServlet.f_username)+"_"+userType);
 		            loginCookie.setMaxAge(30*60);
 		            response.addCookie(loginCookie);
-		            System.out.println("Completed.........................");
 					response.sendRedirect("/Stock/BrokerDashboard");
 					return;
 				}
@@ -176,20 +187,9 @@ public class LoginServlet extends HttpServlet {
 				}
 			}
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 	}
 
-	private void CreateSession(HashMap<String, String> params, Cookie[] cookies) {
+	private void CreateSession(HashMap<String, String> params, Cookie[] cookies,HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("From Create Session");
 		String jsession = new String();
 		for (Cookie cookie : cookies) {
@@ -218,11 +218,16 @@ public class LoginServlet extends HttpServlet {
 			try {
 				DatabaseConn.ExecuteQuery(sql);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				request.getSession().invalidate();
+				try {
+					response.sendRedirect("/Stock/index.jsp");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			
 			}
 		
-		System.out.println("done");
 		
 		
 		

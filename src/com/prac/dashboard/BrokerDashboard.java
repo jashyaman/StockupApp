@@ -56,14 +56,12 @@ public class BrokerDashboard extends HttpServlet {
 				return;
 			}
 		}
-		System.out.println("BrokerDashboard");
 		getCompanyAuthList(request);
 		
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/BrokerDashboard.jsp");
 		
         if (dispatcher != null){
-        //	System.out.println("request dispatcher in process");
          dispatcher.forward(request, response);
         }  
 		
@@ -75,25 +73,24 @@ public class BrokerDashboard extends HttpServlet {
 		String username = new String();
 		Cookie[] cookies = request.getCookies();
 		
-		System.out.println("inside getCompanyAuthList");
 		for (Cookie cookie : cookies) {
-			System.out.println(cookie.getName());
 			if(cookie.getName().equalsIgnoreCase("user_type"))
 				
 				username = cookie.getValue().split("_")[0];
 			
 		}
 		
-		System.out.println(username + " has been extracted");
-		if(stmt != null)
+		if(stmt == null)
 		{
-			System.out.println("stmt is not null");
+			System.out.println("stmt is null");
 		}
 		try {
 			ResultSet rs = stmt.executeQuery("SELECT AUTHORIZED,COMPANYNAME FROM COMPANY WHERE USERNAME = '" + username + "'");
-			if(rs != null){
-				System.out.println("result set is not null");
-			
+			if(rs == null){
+				System.out.println("result set is null");
+			}
+			else
+			{
 			    while(rs.next())
 			    {
 					Boolean s = (Boolean) rs.getObject(1);
@@ -108,13 +105,11 @@ public class BrokerDashboard extends HttpServlet {
 				}
 				if(sb.toString().length() == 0)
 				{
-					System.out.println("empty list");
 					request.setAttribute("count", 0);
 				}
 				else
 				{
 				request.setAttribute("count", 1);
-				System.out.println("retrieved the company list " + sb.toString().substring(0, sb.toString().length()-1));
 				String strar[] = sb.toString().substring(0, sb.toString().length()-1).split(",");
 				request.setAttribute("auth_list", strar);
 				request.setAttribute("username", username);

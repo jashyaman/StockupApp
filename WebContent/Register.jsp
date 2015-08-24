@@ -21,11 +21,18 @@
 	    var pass = document.forms["UserRegistration"]["password"].value; 
 	    var cpass = document.forms["UserRegistration"]["cpassword"].value;
 	    var email = document.forms["UserRegistration"]["email"].value;
-	    
+	    var baccount = document.forms["UserRegistration"]["baccount"].value;
+	    var fullname = document.forms["UserRegistration"]["holder"].value;
+	    var balance = document.forms["UserRegistration"]["balance"].value;
+	    var address = document.forms["UserRegistration"]["addr"].value;
+	    var aptno = document.forms["UserRegistration"]["apt"].value;
+	    var city = document.forms["UserRegistration"]["city"].value;
+	    var state = document.forms["UserRegistration"]["state"].value;
 	    
 	    if(cpass == pass){
-	    if (fname == null || fname == "" || lname == null || lname == "" || 
-	    		uname == null || uname == "" || pass == null || pass == "" || email == null || email =="") {
+	    if (fname == null || fname == "" || lname == null || lname == "" || uname == null || uname == "" || pass == null || pass == "" || email == null || email =="" ||
+	    state == null || state == "" || address == null || address == "" || aptno == null || aptno == "" || city == null || city =="" ||
+	    		baccount == null || baccount == "" || fullname == null || fullname == "" || balance == null || balance =="") {
 	        alert("All fields must be filled out");
 	        return false;
 	    }else

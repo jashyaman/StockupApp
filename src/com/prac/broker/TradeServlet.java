@@ -47,15 +47,19 @@ public class TradeServlet extends HttpServlet {
 		{
 			Boolean check = false;
 			for (Cookie cookie : cookies) {
+				System.out.println(cookie.getName());
 				if(cookie.getName().equalsIgnoreCase("user_type"))
 				{
 					check = true;
 				}
-				 if(cookie.getName().equalsIgnoreCase("JESSIONID"))
+				 if(cookie.getName().equalsIgnoreCase("JSESSIONID"))
 				 {
+					 
 					 jsession = cookie.getValue();
+					 
 				 }
 			}
+			
 			if(!check)
 			{
 				response.sendRedirect("/Stock/index.jsp");
@@ -95,12 +99,10 @@ public class TradeServlet extends HttpServlet {
 				}
 				catch(NumberFormatException e)
 				{
-					System.out.println("here");
 				}
 			StockArray.add(Stockinfo);
 				i++;
 			}
-			System.out.println(i);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -129,7 +131,6 @@ public class TradeServlet extends HttpServlet {
 			 }
 			 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return stock_portfolio;
@@ -159,13 +160,11 @@ public class TradeServlet extends HttpServlet {
 		request.setAttribute("StockArray", MarqueeStock);
 		request.setAttribute("StockData", StockArray);
 		
-		System.out.println(stock_portfolio.size());
 		request.setAttribute("Stock_portfolio", stock_portfolio);
 		
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/TradeScreen.jsp");
 	        if (dispatcher != null){
-	        //	System.out.println("request dispatcher in process");
 	         dispatcher.forward(request, response);
 	        }
 	}

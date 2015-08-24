@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Bootstrap Example</title>
+<title>StockUp App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -19,38 +19,38 @@
 	String label,Home_label;
 	if(cookies == null)
 	{
-		label = "<a href=\"Login.jsp\">Login</a>";
+		label = "<a href=\"/Stock/Login.jsp\">Login</a>";
 		Home_label = "<a href=\"/Stock/index.jsp\">Home</a>";
 		
 	}
 	else
 	{
-		Boolean check = false,Admin = false;
+		Boolean checkIfbrowserhasAusercookie = false,isAdmin = false;
 		for (Cookie cookie : cookies) {
 			if(cookie.getName().equalsIgnoreCase("user_type"))
 			{
-				check = true;
+				checkIfbrowserhasAusercookie = true;
 				if(cookie.getValue().split("_")[1].equals("true"))
 				{
-					Admin = true;
+					isAdmin = true;
 				}
 				else
 				{
-					Admin = false;
+					isAdmin = false;
 				}
 				
 			}
 		}
-		if(!check)
+		if(!checkIfbrowserhasAusercookie)
 		{
-			label = "<a href=\"Login.jsp\">Login</a>";
+			label = "<a href=\"/Stock/Login.jsp\">Login</a>";
 			Home_label = "<a href=\"/Stock/index.jsp\">Home</a>";
 		}
 		else
 		{
 			
 			label =  "<a href=\"LogoutServlet\">Logout</a>";
-			if(Admin)
+			if(isAdmin)
 				Home_label = "<a href=\"/Stock/AdminDashboard\">Admin Home</a>";
 			else
 				Home_label = "<a href=\"/Stock/BrokerDashboard\">Broker Home</a>";

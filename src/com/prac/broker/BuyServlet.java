@@ -37,30 +37,35 @@ public class BuyServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Enumeration<String> em = request.getParameterNames();
 		HashMap<String, String> map = new HashMap<String,String>();
+		
+		if(em == null)
+		{
+			System.out.println("all is lost");
+		}
 		while (em.hasMoreElements()) {
-			String string = (String) em.nextElement();
-			if(string.equalsIgnoreCase(txn_detail) || string.equalsIgnoreCase("qty"))
+			String params = (String) em.nextElement();
+			if(params.equalsIgnoreCase(txn_detail) || params.equalsIgnoreCase("qty"))
 			{
-				String value = request.getParameter(string);
-				map.put(string, value);
+				String value = request.getParameter(params);
 				
+				if(params.equalsIgnoreCase(txn_detail))
+				{
+					params = params.replaceAll("[\\r\\n\\t]", " ");
+					params = params.replaceAll("  ", " ");
+				}
+				map.put(params, value);
 			}
 		}
-		String tradeDetails = map.get(txn_detail);
-		tradeDetails = tradeDetails.replaceAll("[\\r\\n\\t]", " ");
-		tradeDetails = tradeDetails.replaceAll("  ", " ");
-		
-		map.remove(txn_detail);
-		
-		map.put(txn_detail,tradeDetails);
 		
 		
-		
-		
+		/*
+		 * fetch trade details ^
+		 */
 		
 		
 		try {
 			if(CreateBuyTransaction(map,request.getCookies()).equalsIgnoreCase("SUCCESSFUL")){
+				
 				response.sendRedirect("/Stock/TradeServlet");
 			}
 			else
@@ -78,6 +83,25 @@ public class BuyServlet extends HttpServlet {
 	}
 
 
+	/*
+	 * CreateBuyTransaction:
+	 * Input: map of input request parameters
+	 * 		  session cookies.
+	 * step1:
+	 * fetch the jsession cookie.
+	 * step2:
+	 * fetch teh username from jsessionid
+	 * step3:
+	 * get userid from username
+	 * step4:
+	 * get account details with userid : accountno and balance
+	 * step5:
+	 * calculate price.
+	 * step6:
+	 * insert a buy transaction in transaction table
+	 * step7:
+	 * Insert transaction details
+	 */
 
 	private String CreateBuyTransaction(HashMap<String, String> map, Cookie[] cookies) throws SQLException {
 		
@@ -126,13 +150,19 @@ public class BuyServlet extends HttpServlet {
 					balance = rs.getObject(2).toString();
 				}
 			}else return "error occurred during transaction";
+			double price = 0.0;
 			
-			System.out.println(txn_details[3]);
-			double price = Double.parseDouble(txn_details[3]);
+			try
+			{
+				price= Double.parseDouble(txn_details[3]);
+			}
+			catch(NumberFormatException e)
+			{
+				price = 0.0;
+			}
 			
 			int qty = Integer.parseInt(map.get("qty"));
 			
-			System.out.println(price + " x " + qty + " = "+  price*qty);
 			
 			if(Double.parseDouble(balance) < price*qty)
 			{
@@ -149,18 +179,20 @@ public class BuyServlet extends HttpServlet {
 					while(rs.next())
 					{
 						txn_id = (int)rs.getObject(1);
-						System.out.println(txn_id);
 					}
 				}
 				else
 				{
-					System.out.println("error is resultset information");
+					System.out.println("error in resultset information");
 				}
 				
 				
 				DatabaseConn.ExecuteQuery(GenerateQuery.InsertTransactionDetails(txn_id,txn_details[1],price,qty));
-				
+				DatabaseConn.ExecuteQuery(GenerateQuery.updateAccount(txn_id,price*qty,'b'));
+				DatabaseConn.ExecuteQuery(GenerateQuery.updatePortfolioOnBuy(txn_id));
+			
 				System.out.println("THE QUERIES HAVE BEEN EXECUTED");
+				
 				return "SUCCESSFUL";
 				
 			}
