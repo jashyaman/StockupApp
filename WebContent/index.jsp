@@ -10,9 +10,58 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  <script type="text/javascript">
-   
-  </script>
+  <link href="https://metroui.org.ua/css/metro.css" rel="stylesheet">
+	<script type="text/javascript" src="WebContent/js/canvasjs.min.js"></script>
+<script type="text/javascript">
+	window.onload = function () {
+
+		var dps = []; // dataPoints
+
+		var chart = new CanvasJS.Chart("chartContainer",{
+			title :{
+				text: "Live Random Data"
+			},			
+			data: [{
+				type: "line",
+				dataPoints: dps 
+			}]
+		});
+
+		var xVal = 0;
+		var yVal = 100;	
+		var updateInterval = 100;
+		var dataLength = 500; // number of dataPoints visible at any point
+
+		var updateChart = function (count) {
+			count = count || 1;
+			// count is number of times loop runs to generate random dataPoints.
+			
+			for (var j = 0; j < count; j++) {	
+ 				yVal = yVal +  Math.round(5 + Math.random() *(-5-5));
+ 				dps.push({
+ 					x: xVal,
+ 					y: yVal
+ 				});
+ 				xVal++;
+ 			};
+ 			if (dps.length > dataLength)
+			{
+				dps.shift();				
+			}
+			
+			chart.render();		
+
+		};
+
+		// generates first set of dataPoints
+		updateChart(dataLength); 
+
+		// update chart after specified time. 
+		setInterval(function(){updateChart()}, updateInterval); 
+
+	}
+	</script>
+	
     <%
     
     Cookie[] cookies = request.getCookies();
@@ -59,8 +108,8 @@
   %>
   
 </head>
-<body>		
-<div class="container-fluid" id="ex" style="background-image: url('http://investorplace.com/wp-content/uploads/2014/12/Nasdaq.jpg')">
+<body  background="http://investorplace.com/wp-content/uploads/2014/12/Nasdaq.jpg" style="background-attachment: fixed">		
+<div class="container-fluid" id="ex" >
 <div class="container-fluid" style="background: lightblue" id="tr">
  <center><h1 ><b id="opw" >StockUp</b></h1>
   <h4 ><b id="w">An Online Trading portal</b></h4></center> 
@@ -76,19 +125,29 @@
 </div>
 <div class="container-fluid">
 
-
+<br>
+<br>
+<br>
 </div>
-<div class="container-fluid" style="background-color:green;">
-<div class="col-sm-2" >CNN Money</div>
-<div class="col-sm-2" >Bloomberg</div>
-<div class="col-sm-2" >WSJ</div>
-<div class="col-sm-2" >Business Insider</div>
-<div class="col-sm-2" >BusinessLine</div>
-<div class="col-sm-2" >Fortune</div>
-</div>
+<div class="tile-large" style="background-color:transparent;width: 400px;display: inline-block;text-align: center;vertical-align:middle;"><a href="http://money.cnn.com/"><img width="1500" height="100%" src="http://s2.postimg.org/9n8d3ay7d/CNN_Icon.png"></a></div>
+<div class="tile-large" style="background-color:transparent;width: 400px;display: inline-block;text-align: center;vertical-align:middle; "><a href="http://www.bloomberg.com/"><img src="http://s1.postimg.org/o73fxojtb/rsz_12.jpg"></a></div>
+<div class="tile-large" style="background-color:transparent;width: 400px;display: inline-block;text-align: center;vertical-align:middle; "><a href="http://www.wsj.com/"><img src="http://s8.postimg.org/wrscr26id/WSJ_logo.jpg"></a></div>
+<div class="tile-large" style="background-color:transparent;width: 400px;display: inline-block;text-align: center;vertical-align:middle; "><a href="http://www.businessinsider.com/"><img src="http://s13.postimg.org/3tzgkrzs7/07_business_insider_logo.png"></a></div>
+<div class="tile-large" style="background-color:transparent;width: 400px;display: inline-block;text-align: center;vertical-align:middle; "><a href="http://www.cbsnews.com/moneywatch/"><img src="http://s2.postimg.org/830qg1d49/Money_Watch_Logo.jpg"></a></div>
+<div class="tile-large" style="background-color:transparent;width: 400px;display: inline-block;vertical-align:baseline; "><a href="http://www.reuters.com/finance/markets"><img src="http://s8.postimg.org/7o1ojqpo5/Reuters_logo.png"></a></div>
 </div>
 <div>
-
+<div>
 </div>
+<div id="chartContainer" style="height: 300px; width:100%;">
+	</div>
+</div>
+<footer>
+<div style="background: lightblue">
+  <p>All Rights Reserved</p>
+  <p>Contact information: <a href="mailto:shyam_@live.in">
+  SHYAM_@LIVE.IN</a>.</p>
+  </div>
+</footer>
 	</body>	
 </html>

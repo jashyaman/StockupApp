@@ -35,7 +35,7 @@
 <button class="pure-button pure-button-primary" onclick="Home()">Home</button>
 <div style="font-size:10px font-family: Helvectica, sans-serif;position:absolute;width:270px;border:1px solid red;
 padding: 5px;top:50%;left:20%;margin:-100px 0 0 -200px;-webkit-animation-name: example;-webkit-animation-duration: 4s;">
-<img height="30" width="30" src="http://icons.iconarchive.com/icons/martz90/hex/512/warning-icon.png"><br>
+<div style="margin-top:10px;background:url('./img/error_icon.png');height:30px;width:30px;float:left;"></div><br>
 Unauthorized login is prohibited. Note: Once login is successful, access to the user account entails privileges to perform buy/sell trades that will use monetary resources available in the banking account associated with this login. Kindly do not share login credentials with anyone. The Application is not responsible for any loss resulting from such incidents. All rights reserved.
 </div>
 
