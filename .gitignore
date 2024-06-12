@@ -1,1 +1,7 @@
 /build/
+target/
+.idea/
+.idea/compiler.xml
+*.iml
+.project
+.classpath
